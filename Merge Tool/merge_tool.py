@@ -6,14 +6,14 @@ import os
 class JsonKeyMergerApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("JSON Key Sync Tool")
-        self.root.geometry("550x280")  # Increased height for the checkbox
+        self.root.title("JSON Key Merge Tool")
+        self.root.geometry("550x280")
         self.root.resizable(False, False)
 
         # Initialize variables
         self.source_path = tk.StringVar()
         self.target_path = tk.StringVar()
-        self.delete_option = tk.BooleanVar()  # Variable for the checkbox
+        self.delete_option = tk.BooleanVar()
 
         # Build UI
         self.create_widgets()
@@ -23,7 +23,7 @@ class JsonKeyMergerApp:
         main_frame = tk.Frame(self.root, padx=20, pady=20)
         main_frame.pack(fill=tk.BOTH, expand=True)
 
-        # 1. Input Area
+        # Input Area
         input_frame = tk.Frame(main_frame)
         input_frame.pack(fill=tk.X, pady=(0, 10))
 
@@ -47,7 +47,7 @@ class JsonKeyMergerApp:
         btn_target = tk.Button(input_frame, text="Browse", command=self.select_target, width=10)
         btn_target.grid(row=1, column=2, padx=5, pady=5)
 
-        # 2. Options Area (New Checkbox)
+        # Options Area (Checkbox)
         option_frame = tk.Frame(main_frame)
         option_frame.pack(fill=tk.X, pady=(10, 15))
         
@@ -61,8 +61,8 @@ class JsonKeyMergerApp:
         )
         chk_delete.pack(anchor="w")
 
-        # 3. Action Button
-        btn_run = tk.Button(main_frame, text="Process & Save (to Target Folder)", 
+        # Action Button
+        btn_run = tk.Button(main_frame, text="Process & Save (to Current Folder)", 
                             command=self.process_json, bg="#e1e1e1", height=2, font=("Arial", 11))
         btn_run.pack(fill=tk.X)
 
@@ -99,28 +99,26 @@ class JsonKeyMergerApp:
             added_count = 0
             deleted_count = 0
 
-            # 1. Add missing keys (Source -> Target)
+            # Add missing keys
             for key in source_data.keys():
                 if key not in target_data:
                     target_data[key] = ""
                     added_count += 1
             
-            # 2. Delete extra keys (Target - Source) if Checkbox is selected
+            # Delete extra keys (if option checked)
             if self.delete_option.get():
-                # Identify keys to remove
                 keys_to_remove = [k for k in target_data.keys() if k not in source_data]
                 for k in keys_to_remove:
                     del target_data[k]
-                    print(f"Deleted key: {k}")
                     deleted_count += 1
 
-            # Generate output path
-            target_dir = os.path.dirname(t_path)
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            
             target_filename = os.path.basename(t_path)
             filename_no_ext = os.path.splitext(target_filename)[0]
             
             output_filename = f"{filename_no_ext}_integrated.json"
-            output_path = os.path.join(target_dir, output_filename)
+            output_path = os.path.join(script_dir, output_filename)
 
             # Write file
             with open(output_path, "w", encoding="utf-8") as f:
