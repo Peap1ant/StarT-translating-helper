@@ -22,8 +22,8 @@ Original JSON
 
 ```json
 {
-    'key': 'value',
-    'new_key: 'new_value'
+    "key": "value",
+    "new_key": "new_value"
 }
 ```
 
@@ -31,7 +31,7 @@ Target JSON
 
 ```json
 {
-    'key': 'value'
+    "key": "value"
 }
 ```
 
@@ -39,8 +39,8 @@ Merged JSON
 
 ```json
 {
-    'key': 'value',
-    'new_key': ''
+    "key": "value",
+    "new_key": ""
 }
 ```
 
